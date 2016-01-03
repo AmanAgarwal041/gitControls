@@ -1,5 +1,6 @@
 import os
 import uuid
+import subprocess
 class Git(object) :
     '''
         A class is defined for Git functions
@@ -30,6 +31,12 @@ class Git(object) :
         '''
 
         while(True):
+            for i in range(len(self.functionalities)):
+                if(i==0):
+                    print "*******************\n"+self.functionalities[i]
+                else:
+                    print str(i)+") "+self.functionalities[i]
+            print "*******************\n"
             input = raw_input().strip().split(" ")
             if((input[0].isdigit()) and (int(input[0]) >= 1  and int(input[0]) <= len(self.functionValues))):
                 print self.functionValues[int(input[0])](input[1] if(len(input)==2) else str(uuid.uuid1()))
@@ -38,10 +45,13 @@ class Git(object) :
 
 
     def initialisation(self,directory):
+        '''
+            Initialisation of git project folder.
+        '''
         try:
-            # print os.listdir(self.path)
             os.mkdir(self.path+directory)
-            return "done"
+            os.chdir(self.path+directory)
+            return subprocess.check_output("git init" , shell=True)
         except OSError:
             return "failed"
 
